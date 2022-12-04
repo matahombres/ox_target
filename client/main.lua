@@ -327,7 +327,24 @@ RegisterNUICallback('select', function(data, cb)
     cb(1)
     setNuiFocus(false)
 
-    local option = options?[data[1]][data[2]]
+    local option
+
+    if( string.find(data[2], "-") ) then
+        local idCollection = {}
+        for idC in string.gmatch(data[2], '([^-]+)') do
+            table.insert(idCollection, idC)            
+        end
+
+        local firstIndex = table.remove(idCollection, 1)
+        option = options?[data[1]][tonumber(firstIndex)]
+
+        for nextId in pairs(idCollection) do            
+            option = option["submenu"][tonumber(nextId)]
+        end
+
+    else
+        option = options?[data[1]][tonumber(data[2])]
+    end
 
     if option then
         if option.onSelect then
@@ -346,4 +363,9 @@ RegisterNUICallback('select', function(data, cb)
     if IsNuiFocused() then
         isActive = false
     end
+end)
+
+RegisterNUICallback('forceRemoveFocus', function(data, cb)
+    cb(1)
+    setNuiFocus(false)
 end)
