@@ -339,7 +339,7 @@ RegisterNUICallback('select', function(data, cb)
         option = options?[data[1]][tonumber(firstIndex)]
 
         for nextId in pairs(idCollection) do            
-            option = option["submenu"][tonumber(nextId)]
+            option = option["submenu"][tonumber(idCollection[nextId])]
         end
 
     else
