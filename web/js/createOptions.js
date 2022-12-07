@@ -55,10 +55,17 @@ export function createOption(element, type, data, id, menuId) {
     </div>
     `;
   if(data.submenu != null){
-    const numberSubmenu = menuId+"-"+id;
-    createSubmenu(type, data.submenu, numberSubmenu);
+    if(menuId.includes("-")){
+      createSubmenu(type, data.submenu, id);
+    }else{
+      createSubmenu(type, data.submenu, menuId+"-"+id);
+    }
     option.addEventListener('click', () => {
-      toggleMenu(numberSubmenu) 
+      if(menuId.includes("-")){
+        toggleMenu(id);
+      }else{
+        toggleMenu(menuId+"-"+id) 
+      }
     });
   }else{
     option.addEventListener('click', () => {
